@@ -1,0 +1,11 @@
+{
+  "name": "vk_groupbot",
+  "version": "0.1.0",
+  "description": "Бот для беседе в социальной сети ВКонтакте",
+  "main": "run.js",
+  "scripts": {
+    "start": "node run.js"
+  },
+  "author": "thepirateclub",
+  "license": "MIT"
+}

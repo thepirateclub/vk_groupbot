@@ -1,0 +1,11 @@
+var profile = API.users.get({'user_ids': #userId#});
+var fromId = profile@.id;
+var repeat = 0;
+
+while(repeat < 10) {
+repeat = repeat + 1;
+var textMessage = 'Привет, ' + profile@.first_name + ' ' + profile@.last_name + ' - ' + repeat;
+API.messages.send({'user_ids': fromId, 'random_id': #randomId# + repeat, 'message': textMessage});
+}
+
+return [profile, repeat, fromId];
