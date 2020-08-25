@@ -1,9 +1,8 @@
-class CommandProcessing {
-    static controllers = new Map();
+const Controllers = require('../core/controllers');
 
-    static setControllers(controllers) {
-        CommandProcessing.controllers = controllers;
-    }
+class CommandProcessing {
+    static controllers = Controllers.list;
+
     static findCommand(events) {
         const updates = events?.updates;
         if (updates !== undefined) {

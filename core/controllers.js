@@ -2,17 +2,14 @@ const Path = require('path');
 const fs = require('fs');
 
 class Controllers {
-
-    constructor() {
-        this.list = new Map();
-    }
+    static list = new Map();
 
     /**
      * Получение списка файлов из указанной папки
      * Загрузка каждого файла, кроме eventController.js
      * Добавление имени класса в файле, как ключ, а сам файл как значение
     */
-    load(path) {
+    static load(path) {
         const dirents = fs.opendirSync(Path.resolve(path));
         let dir = null;
         while((dir = dirents.readSync()) !== null) {
@@ -20,7 +17,7 @@ class Controllers {
                 console.log(Path.resolve(path, dir.name));
                 let controller = require(Path.resolve(path, dir.name));
                 if (controller.name === undefined) throw Error(`Класс контроллера ${dir.name} не найден, проверьте экспорт класса!`);
-                this.list.set(controller.name, controller);
+                Controllers.list.set(controller.name, controller);
             }
         }
 
@@ -33,8 +30,8 @@ class Controllers {
      * @param event
      * @param middleware - промежуточная функция, для обработки события
      */
-    setAllControllerEvent(eventService, event, middleware = null) {
-        for (const [name, controller] of this.getControllers()) {
+    static setAllControllerEvent(eventService, event, middleware = null) {
+        for (const [name, controller] of Controllers.getControllers()) {
             const _class = new controller();
             if (middleware !== null) {
                 eventService.subscribeOnEvent(event, _class, middleware.bind(_class));
@@ -51,8 +48,8 @@ class Controllers {
      * @param event
      * @param middleware - промежуточная функция, для обработки события
      */
-    setControllerEvent(name, eventService, event, middleware = null) {
-        const controller = this.getController(name);
+    static setControllerEvent(name, eventService, event, middleware = null) {
+        const controller = Controllers.getController(name);
         const _class = new controller();
 
         if (middleware !== null) {
@@ -62,12 +59,12 @@ class Controllers {
         }
     }
 
-    getController(name) {
-        return this.list.get(name);
+    static getController(name) {
+        return Controllers.list.get(name);
     }
 
-    getControllerByTextCommand(textCommand) {
-        for (const [name, controller] of this.list) {
+    static getControllerByTextCommand(textCommand) {
+        for (const [name, controller] of Controllers.list) {
             if (controller.textCommand === null) continue;
             if (controller.textCommand === textCommand) return controller;
         }
@@ -79,8 +76,8 @@ class Controllers {
      * Возвращает список контроллеров
      * @return {Map}
      */
-    getControllers() {
-        return this.list;
+    static getControllers() {
+        return Controllers.list;
     }
 }
 
