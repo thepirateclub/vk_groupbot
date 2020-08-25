@@ -66,10 +66,10 @@ class Controllers {
         return this.list.get(name);
     }
 
-    getControllerByTextCommand(prefix) {
+    getControllerByTextCommand(textCommand) {
         for (const [name, controller] of this.list) {
             if (controller.textCommand === null) continue;
-            if (controller.textCommand === prefix) return controller;
+            if (controller.textCommand === textCommand) return controller;
         }
 
         return null;

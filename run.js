@@ -4,6 +4,7 @@ const ControllersLoader = require('./core/controllers');
 const VkScript = require("./core/vkScript");
 const Event = require('./core/event');
 const EventType = require('./core/eventType');
+const CommandProcessing = require('./middleware/commandProcessing');
 
 const log = new Log('system');
 
@@ -14,8 +15,9 @@ const longPoll = new LongPoll(60);
 
 controllers.load('controllers');
 log.info("Загружено контроллеров: " + controllers.list.size);
+CommandProcessing.setControllers(controllers.getControllers());
 
-controllers.setAllControllerEvent(event, EventType.MessageNew);
+controllers.setAllControllerEvent(event, EventType.MessageNew, CommandProcessing.findCommand);
 log.info("Все контроллеры подписаны на получения новых сообщений");
 
 scripts.load('scripts');
