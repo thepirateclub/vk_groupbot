@@ -2,28 +2,25 @@ const fs = require('fs');
 const Path = require('path');
 
 class VkScript {
+    static list = new Map()
 
-    constructor() {
-        this.list = new Map();
-    }
-
-    load(path) {
+    static load(path) {
         const dirents = fs.opendirSync(Path.resolve(path));
         let dir = null, scripts = [];
         while((dir = dirents.readSync()) !== null) {
             const file = fs.readFileSync(Path.resolve(path, dir.name));
-            this.list.set(dir.name, file.toString());
+            VkScript.list.set(dir.name, file.toString());
         }
         dirents.close();
     }
 
-    getScript(name, params = null) {
-        const file = this.list.get(name + '.txt');
+    static getScript(name, params = null) {
+        const file = VkScript.list.get(name + '.txt');
         if (file === null) throw new Error("Скрипт: " + name + " не найден!");
-        return this.checkVariable(params, file);
+        return VkScript.checkVariable(params, file);
     }
 
-    checkVariable(params = null, file = null) {
+    static checkVariable(params = null, file = null) {
         if (params === null && file == null) return file;
         const pattern = new RegExp('#(?<variable>.*)#', 'igm');
         const paramsKeys = Object.keys(params);
@@ -33,10 +30,10 @@ class VkScript {
             const key = match[1];
             if (!paramsKeys.includes(key)) throw new Error(`В параметрах отсутствует переменная ${key}`);
         }
-        return this.compileScript(params, file, pattern);
+        return VkScript.compileScript(params, file, pattern);
     }
 
-    compileScript(params = null, file = null, pattern = null) {
+    static compileScript(params = null, file = null, pattern = null) {
 
         if (params === null) throw new Error(`Отсутствуют параметры: params = ${JSON.stringify(params)}`);
         if (file === null) throw new Error(`Не указан файл: file = ${file}`);

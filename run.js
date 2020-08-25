@@ -9,7 +9,6 @@ const CommandProcessing = require('./middleware/commandProcessing');
 const log = new Log('system');
 
 const controllers = new Controllers();
-const scripts = new VkScript();
 const event = new Event();
 const longPoll = new LongPoll(60);
 
@@ -20,8 +19,8 @@ CommandProcessing.setControllers(controllers.getControllers());
 controllers.setAllControllerEvent(event, EventType.MessageNew, CommandProcessing.findCommand);
 log.info("Все контроллеры подписаны на получения новых сообщений");
 
-scripts.load('scripts');
-log.info("Загружено скриптов: " + scripts.list.size);
+VkScript.load('scripts');
+log.info("Загружено скриптов: " + VkScript.list.size);
 
 event.connectionToEventService(longPoll, 'update', function (event, context) {
     if (event?.updates) for (const update of event.updates) if (update?.type) context.emit(update.type, event);
