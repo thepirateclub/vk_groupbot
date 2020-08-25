@@ -1,13 +1,10 @@
 const util = require('util');
 
 class Log {
-    name = null;
-    options = {showHidden: false, depth: 10, colors: true, compact: true, breakLength: Infinity};
     constructor(name, options = null) {
         this.name = name;
-        if (options != null) {
-            this.options = options;
-        }
+        const defaultOptions = {showHidden: false, depth: 10, colors: true, compact: true, breakLength: Infinity};
+        this.options = options === null? this.options = defaultOptions: this.options = options;
     }
 
     getLabelDateTime() {
@@ -18,15 +15,15 @@ class Log {
         const seconds = date.getSeconds() < 10? '0' + date.getSeconds(): date.getSeconds();
         const minutes = date.getMinutes() < 10? '0' + date.getMinutes(): date.getMinutes();
 
-        return `${date.getDate()}-${month}-${date.getFullYear()} ${hours}:${minutes}:${seconds}`
+        return `${date.getDate()}.${month}.${date.getFullYear()} ${hours}:${minutes}:${seconds}`
     }
 
     info(text) {
-        console.log('['+ this.name + '][' + this.getLabelDateTime() + ']: ' + util.inspect(text, this.options));
+        console.log(`[${this.name}][${this.getLabelDateTime()}]: ${util.inspect(text, this.options)}`)
     }
 
     error(text) {
-        console.error('['+ this.name + ']['+ this.getLabelDateTime() + ']: ' + util.inspect(text, this.options));
+        console.error(console.log(`[${this.name}][${this.getLabelDateTime()}]: ${util.inspect(text, this.options)}`));
     }
 
 }
