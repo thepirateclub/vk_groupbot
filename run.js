@@ -1,6 +1,6 @@
 const LongPoll = require('./core/longPoll');
 const Log = require('./core/log');
-const ControllersLoader = require('./core/controllers');
+const Controllers = require('./core/controllers');
 const VkScript = require("./core/vkScript");
 const Event = require('./core/event');
 const EventType = require('./core/eventType');
@@ -8,7 +8,7 @@ const CommandProcessing = require('./middleware/commandProcessing');
 
 const log = new Log('system');
 
-const controllers = new ControllersLoader();
+const controllers = new Controllers();
 const scripts = new VkScript();
 const event = new Event();
 const longPoll = new LongPoll(60);
