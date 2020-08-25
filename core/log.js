@@ -23,7 +23,7 @@ class Log {
     }
 
     error(text) {
-        console.error(console.log(`[${this.name}][${this.getLabelDateTime()}]: ${util.inspect(text, this.options)}`));
+        console.error(`[${this.name}][${this.getLabelDateTime()}]: ${util.inspect(text, this.options)}`);
     }
 
 }
